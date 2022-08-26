@@ -1,0 +1,16 @@
+@import '~bootstrap/scss/bootstrap.scss';
+@import './vars.scss';
+
+@import '~@fontsource/montserrat/index.css';
+@import '~@fontsource/montserrat/500.css';
+@import '~@fontsource/montserrat/700.css';
+
+body { 
+    font-family: "Montserrat", sans-serif; 
+
+    background: white;
+    background-image: linear-gradient(90deg, rgba(0,0,0,.05) 50%, transparent 0),
+      linear-gradient(rgba(0,0,0,.05) 50%, transparent 0);
+    background-size: 30px 30px;
+
+}

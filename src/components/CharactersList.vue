@@ -3,11 +3,13 @@
     <div class="container">
         <LoadInProgress v-if="loadInProgress" />
 
-        <div v-else class="row row-cols-4 g-3">
-            <SingleCharacter  v-for="character in charactersList" :key="character.id" :character="character" />
+        <MySearch @effettuaRicerca="setSearchText" />
+
+        <CharactersCount :numeroPassato="getFilteredCharacters.length"/>
+
+        <div class="row row-cols-4 g-3">
+            <SingleCharacter  v-for="character in getFilteredCharacters" :key="character.id" :character="character" />
         </div>
-
-
 
     </div>
 
@@ -18,18 +20,43 @@
 import axios from 'axios';
 import SingleCharacter from './SingleCharacter.vue';
 import LoadInProgress from './LoadInProgress.vue';
+import MySearch from './MySearch.vue';
+import CharactersCount from './CharactersCount.vue';
 
 export default {
     name: 'CharactersList',
     components: {
         SingleCharacter,
-        LoadInProgress
+        LoadInProgress,
+        MySearch,
+        CharactersCount
     },
     data() {
         return {
             charactersList: [],
             endpoint: 'https://api.sampleapis.com/rickandmorty/characters',
-            loadInProgress: true
+            loadInProgress: true,
+            searchText: ''
+        }
+    },
+    computed: {
+        getFilteredCharacters() {
+            
+            if (this.searchText == '') {
+                return this.charactersList;
+            } else {
+               
+               const valoriFiltrati = this.charactersList.filter((character => {
+                    if (character.name.toLowerCase().includes(this.searchText.toLowerCase())) {
+                        return true;
+                    } else {
+                        return false;
+                    }
+               }));  
+
+               return valoriFiltrati;
+
+            }
         }
     },
     created() {
@@ -47,6 +74,9 @@ export default {
                 console.log(err);
                 that.loadInProgress = false;
             });
+        },
+        setSearchText (text) {
+            this.searchText = text;
         }
     }
 }
